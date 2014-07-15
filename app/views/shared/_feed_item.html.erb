@@ -1,4 +1,39 @@
 
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- <script>
+// $(document).ready(function()
+//   {
+//   $("#btn1<%= feed_item.id %>").toggle(function(){
+//     if($("#replypost<%= feed_item.id %>").show();
+//     $("#btn1<%= feed_item.id %>").value("Hide");
+//   }, function(){
+//     $("#replypost<%= feed_item.id %>").hide();
+//     $("#btn1<%= feed_item.id %>").value("Reply");
+//   }).toggle();
+// });
+ </script> -->
+<script>
+    $(document).ready(function() {
+      $("#btn1<%= feed_item.id %>").click(function(){
+      //get collapse content selector
+      var collapse_content_selector = $(this).attr('href');         
+ 
+      //make the collapse content to be shown or hide
+      var toggle_switch = $(this);
+      $(collapse_content_selector).toggle(function(){
+        if($(this).css('display')=='none'){
+                                //change the button label to be 'Show'
+        toggle_switch.html('Reply');
+        }else{
+                                //change the button label to be 'Hide'
+        toggle_switch.html('Hide');
+        }
+      });
+      });
+ 
+    }); 
+    </script>
+
  <%  unless defined?(is_reply) && is_reply %>
     <li id="<%= feed_item.id %>">
   <% else %>
@@ -18,19 +53,30 @@
                                      title: feed_item.content %>
   <% end %>   
   <%  unless defined?(is_reply) && is_reply %>
+  <br>
+  <button href="#replypost<%= feed_item.id %>" id="btn1<%= feed_item.id %>" class="btn btn-mini btn-primary" type="button">Reply</button>
+  <!-- <button id="btn2<%= feed_item.id %>" class="btn btn-mini btn-primary" type="button">Hide</button> -->
+  <div id="replypost<%= feed_item.id %>" style="display: none">
     <%= form_for(@micropost) do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
       <div class="field">
         <%= f.text_area :content, placeholder: "Reply...", :id=>"replysize" %>
       </div>
       <%= f.hidden_field :in_reply_to_id, :value => feed_item.id %>
-      <%= f.submit "Reply", class: "btn btn-large btn-primary" %>
+      <%= f.submit "submit", class: "btn btn-mini btn-primary" %>
     <% end %>
+    </div>
   <% end %>
   </li>
   <!-- <div class="replies"> -->
+  <% if !(feed_item.replies == nil) %>
+  <div style="padding-bottom: 10px">
+  <%else%>
+  <div>
+  <% end%>
   <% feed_item.replies.each do |reply|%>
     <%= render "shared/feed_item", :feed_item => reply, :is_reply => true %>
   <% end %>
-  <br>
+  </div>
+  
   <!-- </div> -->

@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   before_filter :correct_user,   only: [:edit, :update]
   def show
     @user = User.find(params[:id])
+    @micropost  = current_user.microposts.build
     @microposts = @user.microposts.not_replies.paginate(page: params[:page])
   end
 
@@ -27,7 +28,7 @@ class UsersController < ApplicationController
     if @user.save
       sign_in @user
       flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+      redirect_to root_url
       # Handle a successful save.
     else
       render 'new'

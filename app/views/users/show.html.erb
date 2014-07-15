@@ -5,7 +5,11 @@
       <h1>
         <%= gravatar_for @user %>
         <%= @user.name %>
+        
       </h1>
+    </section>
+    <section>
+      @<%= @user.username %>
     </section>
     <section>
       <%= render 'shared/stats' %>
@@ -16,7 +20,10 @@
     <% if @user.microposts.any? %>
       <h3>Microposts (<%= @user.microposts.count %>)</h3>
       <ol class="microposts">
-        <%= render @microposts %>
+      <% @microposts.each do |reply|%>
+         <%= render "shared/feed_item", :feed_item => reply %>
+      <% end %>
+      <!--  <%= render @microposts %>-->
       </ol>
       <%= will_paginate @microposts %>
     <% end %>

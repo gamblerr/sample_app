@@ -12,11 +12,14 @@
 class User < ActiveRecord::Base
   attr_accessible :name,:username, :email, :password, :password_confirmation
   has_secure_password
+  searchkick
    has_many :microposts, dependent: :destroy
    has_many :relationships, foreign_key: "follower_id", dependent: :destroy
    has_many :followed_users, through: :relationships, source: :followed
   has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship",dependent: :destroy
   has_many :followers, through: :reverse_relationships
+  has_many :posttousers
+  has_many :incoming_microposts, through: :posttousers, source: :micropost
   #has_many :replies, class_name: "Micropost", foreign_key: "to_id"
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token
@@ -29,7 +32,9 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
   def feed
-    Micropost.from_users_followed_by(self)
+   Micropost.where(:id => Micropost.from_users_followed_by(self).pluck(:id) + self.incoming_microposts.pluck(:id) )
+   #Micropost.from_users_followed_by_including_incomingposts(self)
+    
   end
   def following?(other_user)
     relationships.find_by_followed_id(other_user.id)
@@ -41,8 +46,26 @@ class User < ActiveRecord::Base
   def unfollow!(other_user)
     relationships.find_by_followed_id(other_user.id).destroy
   end
-  private
+  
+# def micropost_extract(micropost)
+#   contents = micropost.content.split(' ')
+#   contents.each do |content|
+#     if content.split('').first = '@'
+#       if (userid=isuser(content[1..-1]))
+#           Posttouser.create(:user_id => userid, :micropost_id => micropost.id )
+#       else
+#         #code for post to wrong user
+#       end
+#     else
+#       return
+#     end
+#   end
+# end
+# def isuser(username)
+#   userid = User.where("username = ?",username)
+# end
 
+private
     def create_remember_token
       self.remember_token = SecureRandom.urlsafe_base64
     end

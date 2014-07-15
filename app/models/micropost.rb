@@ -1,9 +1,10 @@
 class Micropost < ActiveRecord::Base
-  attr_accessible :content, :in_reply_to_id
+  attr_accessible :content, :in_reply_to_id, :posted_to_id
   belongs_to :user
  # belongs_to :to, class_name: "User"
   has_many :replies, class_name: "Micropost", foreign_key: "in_reply_to_id"
-
+  has_many :posttousers
+  has_many :posting_to_users, through: :posttousers, source: :user
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
 
@@ -17,5 +18,31 @@ class Micropost < ActiveRecord::Base
     where("user_id IN (#{followed_user_ids}) OR user_id = :user_id",
           user_id: user.id)
   end
+  def self.from_users_followed_by_including_incomingposts(user)
+    followed_user_ids = "SELECT followed_id FROM relationships
+                         WHERE follower_id = :user_id"
+    joins("LEFT OUTER JOIN posttousers ON microposts.id = posttousers.micropost_id").where("microposts.user_id IN (#{followed_user_ids}) OR microposts.user_id = :user_id OR posttousers.user_id = :user_id",
+          user_id: user.id)
+  end
+def micropost_extract()
+  users = []
+  contents = self.content.split(' ')
+  contents.each do |content|
+    if (content.split('').first =='@')
+        users << content[1..-1]
+      end
+    end
+    ids = User.where(:username => users).pluck(:id)
+    ids.each do |userid|
+      Posttouser.create(:user_id => userid, :micropost_id => self.id )
+    end
+end
+
+
+
+ # def isuser(username)
+#   User.where("username = ?",username).first.try(:id)
+# end
+
 
 end
