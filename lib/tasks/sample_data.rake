@@ -13,6 +13,9 @@ def make_users
   99.times do |n|
     name  = Faker::Name.name
     username = Faker::Internet.user_name
+    while(User.find_by_username(username).present?) do
+      username = Faker::Internet.user_name
+    end
     email = "example-#{n+1}@railstutorial.org"
     password  = "password"
     User.create!(name:     name,username: username,
