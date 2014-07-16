@@ -38,8 +38,14 @@ def edit
     @user = User.find(params[:id])
   end
   def index
-   @users = User.paginate(page: params[:page])
+    if params[:query].present?
+      @users = User.search(params[:query], page: params[:page],per_page: 20,fields: [ :username,{name: :text_start},{name: :text_end}])
+    else
+      @users = User.paginate(page: params[:page],per_page: 30)
+    end
   end
+
+  
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
@@ -55,8 +61,7 @@ def edit
     flash[:success] = "User destroyed."
     redirect_to users_url
   end
-  private
-
+  
     def signed_in_user
       unless signed_in?
         store_location

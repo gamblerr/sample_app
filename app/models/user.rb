@@ -12,7 +12,7 @@
 class User < ActiveRecord::Base
   attr_accessible :name,:username, :email, :password, :password_confirmation
   has_secure_password
-  searchkick
+  searchkick(text_start: [:name],text_end: [:name])
    has_many :microposts, dependent: :destroy
    has_many :relationships, foreign_key: "follower_id", dependent: :destroy
    has_many :followed_users, through: :relationships, source: :followed
@@ -47,23 +47,6 @@ class User < ActiveRecord::Base
     relationships.find_by_followed_id(other_user.id).destroy
   end
   
-# def micropost_extract(micropost)
-#   contents = micropost.content.split(' ')
-#   contents.each do |content|
-#     if content.split('').first = '@'
-#       if (userid=isuser(content[1..-1]))
-#           Posttouser.create(:user_id => userid, :micropost_id => micropost.id )
-#       else
-#         #code for post to wrong user
-#       end
-#     else
-#       return
-#     end
-#   end
-# end
-# def isuser(username)
-#   userid = User.where("username = ?",username)
-# end
 
 private
     def create_remember_token

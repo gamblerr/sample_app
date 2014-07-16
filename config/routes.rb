@@ -4,11 +4,14 @@ SampleApp::Application.routes.draw do
       get :following, :followers
     end
   end
+  
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy
 ]
+  match '/search', to: 'static_pages#search'
   match '/signup',  to: 'users#new'
+  #get :autocomplete
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete
   root to: 'static_pages#home'

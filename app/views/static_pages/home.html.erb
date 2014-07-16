@@ -1,22 +1,36 @@
 <% if signed_in? %>
   <div class="row">
     <aside class="span4">
+  
       <section>
         <%= render 'shared/user_info' %>
       </section>
       <section>
         <%= render 'shared/stats' %>
       </section>
+      <%= @count %> Hits
       <section>
         <%= render 'shared/micropost_form' %>
       </section>
+      <section>
+      </section>
     </aside>
     <div class="span8">
+
       <h3>Micropost Feed</h3>
       <%= render 'shared/feed' %>
+      
+      <% if @users.try(:any?) %>
+        <h3>Users</h3>
+        <ol class="users">
+        <%= render @users %>
+        </ol>
+        <%end%>
+       
     </div>
-  </div>  
-<% else %>
+
+  </div>
+  <% else %>
   <div class="center hero-unit">
     <h1>Welcome to the Sample App</h1>
 
