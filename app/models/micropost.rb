@@ -1,6 +1,6 @@
 class Micropost < ActiveRecord::Base
   attr_accessible :content, :in_reply_to_id, :posted_to_id 
-  searchkick
+  searchkick(word_middle: [:content])
   belongs_to :user
  # belongs_to :to, class_name: "User"
   has_many :replies, class_name: "Micropost", foreign_key: "in_reply_to_id"

@@ -8,6 +8,7 @@ gem 'will_paginate', '3.0.3'
 gem 'bootstrap-will_paginate', '0.0.6'
 
 gem 'searchkick'
+#gem 'client_side_validations'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
@@ -16,6 +17,7 @@ group :development, :test do
  # gem 'guard-spork', '1.2.0'
  # gem 'childprocess', '0.5.3'
  # gem 'spork', '0.9.2'
+ gem "debugger"
 end
 group :development do
   gem 'annotate', '2.5.0'
@@ -28,7 +30,7 @@ group :assets do
   gem 'uglifier', '1.2.3'
 end
 
-gem 'jquery-rails', '2.0.2'
+gem 'jquery-rails'
 
 group :test do
   gem 'capybara', '1.1.2'

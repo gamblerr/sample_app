@@ -1,15 +1,5 @@
 <% provide(:title, 'All users') %>
 <h1>All users</h1>
-<%= form_tag users_path, class: "form-inline", method: :get do %>
-  <%= text_field_tag :query, params[:query], class: "form-control"%>
-  '
-  <%= submit_tag "Search", class: "btn btn-primary"%>
-
-  <% if params[:query].present?%>
-    '
-    <%= link_to "clear", users_path%>
-<%end%>
-<%end%>
 <%= will_paginate %>
 <ul class="users">
 <%= render @users %>

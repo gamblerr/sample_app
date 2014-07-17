@@ -8,13 +8,20 @@ class StaticPagesController < ApplicationController
   end
 
   def search
-    @micropost  = current_user.microposts.build
-    # @count = 0
-    @query_string = params[:query]
-    if @query_string.present?
-      index_models = params[:type] || ["user","micropost"]
-      @searchitems = Micropost.search(params[:query], index_name: [index_models.collect{|m| m.capitalize.constantize.searchkick_index.name}]).to_a.paginate(page: params[:page],per_page: 10)
-      @count = @searchitems.count
+    if signed_in?
+      @micropost  = current_user.microposts.build
+      @query_string = params[:query]
+      if @query_string.present?
+        index_models = params[:type] || ["user","micropost"]
+        index_models = index_models.collect{|m| m.capitalize.constantize.searchkick_index.name}
+        @searchitems = Micropost.search(params[:query], index_name: index_models, fields: [{name: :word_start},{username: :word_start},{content: :word_middle}],highlight: {tag: "<strong>"},misspellings: false).with_details.paginate(page: params[:page],per_page: 10)
+      else
+        flash[:error] = "Enter a search item"
+        redirect_to root_url
+      end
+    else
+      flash[:error] = " Please Sign up or Sign in "
+      redirect_to root_url
       # @users = extract_user_items(@searchitems).paginate(page: params[:page],per_page: 10)
       # @feed_items = extract_feed_items(@searchitems).paginate(page: params[:page],per_page: 10)
     end

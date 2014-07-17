@@ -1,7 +1,21 @@
-<%= form_for(@micropost) do |f| %>
+<%= form_for(@micropost , :validate => true) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
-    <%= f.text_area :content, placeholder: "Compose new micropost..." %>
+    <%= f.text_area :content, placeholder: "Compose new micropost...", :validate => { :presence => true } %>
   </div>
-  <%= f.submit "Post", class: "btn btn-large btn-primary" %>
+  <%= f.submit "Post", class: "btn btn-large btn-primary btn-custom" %>
 <% end %>
+
+<script>
+  $(document).ready(function () {
+      $("#new_micropost").validate({ // initialize the plugin
+          rules: {
+              "micropost[content]": {
+                  required: true,
+                  maxlength: 140
+
+              }
+          }
+      });
+  });
+</script>
