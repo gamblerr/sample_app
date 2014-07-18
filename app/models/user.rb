@@ -13,9 +13,9 @@ class User < ActiveRecord::Base
   attr_accessible :name,:username, :email, :password, :password_confirmation
   has_secure_password
   searchkick word_start: [:name, :username]
-   has_many :microposts, dependent: :destroy
-   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
-   has_many :followed_users, through: :relationships, source: :followed
+  has_many :microposts, dependent: :destroy
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  has_many :followed_users, through: :relationships, source: :followed
   has_many :reverse_relationships, foreign_key: "followed_id", class_name: "Relationship",dependent: :destroy
   has_many :followers, through: :reverse_relationships
   has_many :posttousers
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
   def feed
-   Micropost.where(:id => Micropost.from_users_followed_by(self).pluck(:id) + self.incoming_microposts.pluck(:id) )
+    Micropost.where(:id => Micropost.from_users_followed_by(self).pluck(:id) + self.incoming_microposts.pluck(:id) )
    #Micropost.from_users_followed_by_including_incomingposts(self)
     
   end

@@ -5,7 +5,6 @@
       <h1>
         <%= gravatar_for @user %>
         <%= @user.name %>
-        
       </h1>
     </section>
     <section>
@@ -18,7 +17,7 @@
   <div class="span8">
   <%= render 'follow_form' if signed_in? %>
     <% if @user.microposts.any? %>
-      <h3>Microposts (<%= @user.microposts.not_replies.count %>)</h3>
+      <h3><p style = "color:#00CCCC">Microposts (<%= @user.microposts.not_replies.count %>)</p></h3>
       <ol class="microposts">
       <% @microposts.each do |reply|%>
          <%= render "shared/feed_item", :feed_item => reply %>

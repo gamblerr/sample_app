@@ -1,7 +1,7 @@
+
 <% if signed_in? %>
-  <div class="row">
-    <aside class="span4">
-  
+  <div class="row" >
+    <aside class="span5" >
       <section>
         <%= render 'shared/user_info' %>
       </section>
@@ -11,37 +11,26 @@
       <section>
         <%= render 'shared/micropost_form' %>
       </section>
-      <section>
-      </section>
     </aside>
-    <div class="span8">
-
-      <h3>Micropost Feed</h3>
+    <div class="span7">
+      <h3><p style = "color:#009999">Micropost Feed<p></h3>
       <%= render 'shared/feed' %>
-      
       <% if @users.try(:any?) %>
         <h3>Users</h3>
         <ol class="users">
-        <%= render @users %>
+          <%= render @users %>
         </ol>
-        <%end%>
-       
+      <%end%>
     </div>
-
   </div>
-  <% else %>
+ <% else %>
   <div class="center hero-unit">
-    <h1>Welcome to the Sample App</h1>
-
+    <h1>Welcome to the www.connect.com</h1>
     <h2>
       This is the home page for the
-      <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
-      sample application.
+      <a href="#">www.connect.com</a>
     </h2>
-
     <%= link_to "Sign up now!", signup_path, 
                                 class: "btn btn-large btn-primary" %>
   </div>
-
-  <%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
 <% end %>

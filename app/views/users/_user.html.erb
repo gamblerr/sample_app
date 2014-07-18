@@ -7,9 +7,9 @@
       <ol><%= link_to user.name, user %></ol>
     <% end %>
     <%if user_item_content[:highlight][:"username.word_start"].present? %>
-      <ol><%=  link_to user_item_content[:highlight][:"username.word_start"].html_safe, user %></ol>
+      <ol>@<%=  link_to user_item_content[:highlight][:"username.word_start"].html_safe, user %></ol>
     <% else %>
-      <ol><%= link_to user.username, user %></ol>
+      <ol>@<%= link_to user.username, user %></ol>
     <% end %>   
   <% else %>
       <ol><%= link_to user.name, user %></ol>

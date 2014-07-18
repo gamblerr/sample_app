@@ -3,9 +3,8 @@
   <aside class="span4">
     <section>
       <%= gravatar_for @user %>
-      <h1><%= @user.name %></h1>
-      <span><%= link_to "view my profile", @user %></span>
-      <span><b>Microposts:</b> <%= @user.microposts.not_replies.count %></span>
+      <h1><%= link_to @user.name, @user%></h1>
+      <span><h7><b><%= "Posted "+pluralize(current_user.microposts.not_replies.count, "feeds") %></b></h7></span>
     </section>
     <section>
       <%= render 'shared/stats' %>

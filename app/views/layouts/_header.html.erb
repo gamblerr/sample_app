@@ -1,37 +1,31 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
+<header class="navbar navbar-fixed-top navbar-inverse" >
+
   <div class="navbar-inner">
     <div class="container">
-      <%= link_to "Hitesh's-app", root_path, id: "logo" %>
+      <%= link_to "connect", root_path, id: "logo" %>
       <nav>
         <ul class="nav pull-right">
           <li>
-            <!-- <form class="form-search">
-            <div class="input-append">
-            <input type="text" class="span2 search-query">
-                <button type="submit" class="btn"><i class="icon-search"></i></button>
-            </div>
-            </form> -->
-
             <%= form_tag search_path, method: :get, :id => "search_form", :class => "form-search" do %>
             <div class="input-append">
               <%= text_field_tag :query, params[:query], placeholder: "Search", type: "text", :class=>"span2 search-query" %>
               <button type="submit" id="searchbutton" class="btn"><i class="icon-search"></i></button>
             </div>
             </form>
-              <%#= submit_tag "Search", class: "btn btn-primary btn-medium"%>
+             
             <%end%>
           </li>
-          <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Help", help_path %></li>
+          <li><a href="<%= root_path%>"><i class="fa fa-home fa-fw"></i>&nbsp;Home</a></li>
+           <li><a href="<%= help_path%>"><i class="fa fa-header fa-fw"></i>&nbsp;Help</a></li>
           <% if signed_in? %>
-            <li><%= link_to "Users", users_path %></li>
+            <li><a href="<%= users_path%>"><i class="fa fa-group fa-fw"></i>&nbsp;Users</a></li>
             <li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Account <b class="caret"></b>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><%= link_to "Profile", current_user %></li>
-                <li><%= link_to "Settings", edit_user_path(current_user) %></li>
+              <li><a href="<%= user_path(current_user)%>"><i class="fa fa-book fa-fw"></i>&nbsp;Profile</a></li>
+              <li><a href="<%= edit_user_path(current_user)%>"><i class="fa fa-pencil fa-fw"></i>&nbsp;Edit</a></li>
                 <li class="divider"></li>
                 <li>
                   <%= link_to "Sign out", signout_path, method: "delete" %>

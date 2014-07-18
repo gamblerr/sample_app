@@ -41,8 +41,8 @@ class StaticPagesController < ApplicationController
     searchitems.each do |item|
       if item.is_a?(User)
         useritems << item
+      end
     end
-  end
     useritems
   end
   def extract_feed_items(searchitems)
@@ -50,8 +50,8 @@ class StaticPagesController < ApplicationController
     searchitems.each do |item|
       if item.is_a?(Micropost)
         feeditems << item
+      end
     end
-  end
     feeditems
   end
 end

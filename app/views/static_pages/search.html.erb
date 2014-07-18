@@ -3,45 +3,25 @@
     <aside class="span4">
     <nav>
       <ul class="nav nav-pills nav-stacked span2">
-        <li><a href="<%= search_path(:query => @query_string) %>">All</a></li>
-        <li><a href="<%= search_path(:type => ['user'], :query => @query_string) %>">Users</a></li>
-        <li><a href="<%= search_path(:type => ['micropost'], :query => @query_string) %>">Microposts</a></li>
-       
+        <li><a href="<%= search_path(:query => @query_string) %>"><i class="fa fa-tasks fa-fw"></i>All</a></li>
+        <li><a href="<%= search_path(:type => ['user'], :query => @query_string) %>"><i class="fa fa-user fa-fw"></i>Users</a></li>
+        <li><a href="<%= search_path(:type => ['micropost'], :query => @query_string) %>"><i class="fa fa-file-text fa-fw"></i>Microposts</a></li>
       </ul>
     </nav>
     </aside>
     <div class="span8">
-
-      <h3>Search Results</h3>
-      
-        <% @searchitems.each do |item,item1| %>
+      <h3><p style = "color:#00CCCC">Search Results</p></h3>
+      <% @searchitems.each do |item,item1| %>
         <%# debugger %>
         <div style = "padding-bottom:10px">
-        <% if item.is_a?(User)%>
-          <%=render 'users/user', :user => item,:user_item_content => item1, :querystring => @query_string %>
-        <% else %>
-          <%= render "shared/feed_item", :feed_item => item,:feed_item_content => item1, :querystring => @query_string %>
-        <% end %>
+          <% if item.is_a?(User)%>
+            <%=render 'users/user', :user => item,:user_item_content => item1 %>
+          <% elsif item.is_a?(Micropost) && !(item.in_reply_to_id.present?) %>
+            <%= render "shared/feed_item", :feed_item => item,:feed_item_content => item1 %>
+          <% end %>
         </div>
-        <% end %>
-        
-        <%= will_paginate @searchitems%>
+      <% end %>
+      <%= will_paginate @searchitems%>
     </div>
-
   </div>
-  <% else %>
-  <div class="center hero-unit">
-    <h1>Welcome to the Sample App</h1>
-
-    <h2>
-      This is the home page for the
-      <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
-      sample application.
-    </h2>
-
-    <%= link_to "Sign up now!", signup_path, 
-                                class: "btn btn-large btn-primary" %>
-  </div>
-
-  <%= link_to image_tag("rails.png", alt: "Rails"), 'http://rubyonrails.org/' %>
 <% end %>

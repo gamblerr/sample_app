@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".reply-btn").click(function(){
+    $(document).on("click", ".reply-btn", function(){
     //get collapse content selector
     var collapse_content_selector = $(this).attr('href');         
 

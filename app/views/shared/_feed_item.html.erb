@@ -1,60 +1,7 @@
-<li id="<%= feed_item.id %>" <%= "style='padding-left: 50px'".html_safe if (defined?(is_reply) && is_reply) %> >
-<%= link_to gravatar_for(feed_item.user), feed_item.user %>
-<span class="user">
-  <%= link_to feed_item.user.name, feed_item.user %>
-</span>
-<span class="content">
-  <% if defined?(feed_item_content) %>
-    <%= feed_item_content[:highlight][:"content.word_middle"].html_safe %>
-  <% else %>
-    <%= feed_item.content %> 
-  <% end %>
-</span>
-<span class="timestamp">
-  Posted <%= time_ago_in_words(feed_item.created_at) %> ago.
-</span>
-<% if current_user?(feed_item.user) %>
-  <%= link_to "delete", feed_item, method: :delete,
-                                   data: { confirm: "You sure?" },
-                                   title: feed_item.content %>
-<% end %>   
-<%  unless defined?(is_reply) && is_reply %>
-<div>
-  <button href="#replypost<%= feed_item.id %>" id="btn1<%= feed_item.id %>" class="btn btn-mini btn-custom reply-btn" type="button">Reply</button>
-  <% if !(feed_item.replies == []) %>
-    <button href="#replies<%= feed_item.id %>" id="btn2<%= feed_item.id %>" class="btn btn-mini btn-custom replies-btn" type="button"> Show Replies</button>
-  <% end %>
-  <div id="replypost<%= feed_item.id %>" style="display: none">
-    <%= form_for(@micropost, :html => {:id => "new_micropost_#{feed_item.id}"}) do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
-      <div class="field">
-        <%= f.text_area :content, placeholder: "Reply...", :class=>"replysize", :id => "micropost_content_#{feed_item.id}" %>
-      </div>
-      <%= f.hidden_field :in_reply_to_id, :value => feed_item.id, :id => "micropost_in_reply_to_id_#{feed_item.id}" %>
-      <%= f.submit "submit", class: "btn btn-mini btn-custom" %>
-    <% end %>
-  </div>
-</div> 
-<script>
-  $(document).ready(function () {
-      $("#new_micropost_<%= feed_item.id %>").validate({ // initialize the plugin
-          rules: {
-              "micropost[content]": {
-                  required: true,
-                  maxlength: 140
-
-              }
-          }
-      });
-  });
-</script>
-<% end %>
-</li>
-  <!-- <div class="replies"> -->
-  <div id="replies<%= feed_item.id %>" style="display: none" <%= "style='padding-bottom: 10px'".html_safe unless (feed_item.replies == nil) %> >
-  <% feed_item.replies.each do |reply|%>
-    <%= render "shared/feed_item", :feed_item => reply, :is_reply => true %>
-  <% end %>
-  </div>
-  
-  <!-- </div> -->
+<%
+  feed_item_content ||= nil
+  is_reply ||= false
+%>
+<div id = "ajax<%= feed_item.id %>" >
+<%= render "shared/feed_item_inner", :feed_item => feed_item,:feed_item_content => feed_item_content, :is_reply => is_reply %>
+</div>

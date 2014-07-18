@@ -4,6 +4,7 @@ class Micropost < ActiveRecord::Base
   belongs_to :user
  # belongs_to :to, class_name: "User"
   has_many :replies, class_name: "Micropost", foreign_key: "in_reply_to_id"
+  belongs_to :in_reply_to, class_name: "Micropost"
   has_many :posttousers
   has_many :posting_to_users, through: :posttousers, source: :user
   validates :user_id, presence: true
@@ -25,18 +26,18 @@ class Micropost < ActiveRecord::Base
     joins("LEFT OUTER JOIN posttousers ON microposts.id = posttousers.micropost_id").where("microposts.user_id IN (#{followed_user_ids}) OR microposts.user_id = :user_id OR posttousers.user_id = :user_id",
           user_id: user.id)
   end
-def micropost_extract()
-  users = []
-  tags = []
-  contents = self.content.split(' ')
-  contents.each do |content|
-    if (content.split('').first =='@')
-        users << content[1..-1]
+  def micropost_extract()
+    users = []
+    tags = []
+    contents = self.content.split(' ')
+    contents.each do |content|
+      if (content.split('').first =='@')
+          users << content[1..-1]
       end
     end
     contents.each do |content|
-    if (content.split('').first =='#')
-        tags << content[1..-1]
+      if (content.split('').first =='#')
+          tags << content[1..-1]
       end
     end
     ids = User.where(:username => users).pluck(:id)
@@ -46,7 +47,7 @@ def micropost_extract()
     tags.each do |tag|
       Tag.create(:tag_name => tag, :micropost_id => self.id)
     end
-end
+  end
 
 
 
