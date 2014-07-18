@@ -38,7 +38,7 @@
           <%= f.text_area :content, placeholder: "Reply...", :class=>"replysize", :id => "micropost_content_#{feed_item.id}" %>
         </div>
         <%= f.hidden_field :in_reply_to_id, :value => feed_item.id, :id => "micropost_in_reply_to_id_#{feed_item.id}" %>
-        <%= f.submit "submit", class: "btn btn-mini btn-custom" %>
+        <%= f.submit "submit", class: "btn btn-mini btn-custom alignright" %>
         <% end %>
       </div>
     </div> 
