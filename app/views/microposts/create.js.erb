@@ -1,0 +1,1 @@
+$("#ajax<%= @feed_item.id %>").html("<%= escape_javascript(render('shared/feed_item_inner', :feed_item => @feed_item ) ) %>")
