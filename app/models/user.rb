@@ -10,8 +10,6 @@
 #
 
 class User < ActiveRecord::Base
-  extend FriendlyId
-  friendly_id :name, use: :history
   attr_accessible :name,:username, :email, :password, :password_confirmation
   has_secure_password
   searchkick word_start: [:name, :username]
@@ -38,9 +36,7 @@ class User < ActiveRecord::Base
    #Micropost.from_users_followed_by_including_incomingposts(self)
     
   end
-  def should_generate_new_friendly_id?
-    new_record?
-  end
+  
   def following?(other_user)
     relationships.find_by_followed_id(other_user.id)
   end
